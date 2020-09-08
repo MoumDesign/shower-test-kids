@@ -35,13 +35,13 @@ function initTimer(dur) {
 
 
 var sound = new Howl({
-  src: ['../assets/singing-bowl-gong.mp3'],
+  src: ['assets/singing-bowl-gong.mp3'],
   autoplay: false,
   volume: 1.0
 });
 
 var stopSound = new Howl({
-  src: ['../assets/stop-bowl.m4a'],
+  src: ['assets/stop-bowl.m4a'],
   autoplay: false,
   volume: 1.0
 });
