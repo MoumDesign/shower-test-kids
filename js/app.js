@@ -13,17 +13,17 @@ var queue = [
 	},
 	{ "type" : "pause",
 		"speech" : "Good job. I hope you are all soaked by now, because now it's time to soap your body.",
-		"duration" : 90,
+		"duration" : 40,
 		"background": "radial-gradient(closest-side, #ff9e7c 88.24%, #ff6530 95.8%, #fc6100);"
 	},
 	{ "type" : "water",
 		"speech" : "Time to rinse away all stress. Turn the water back on.",
-		"duration" : 150,
+		"duration" : 120,
 		"background" : "radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 95.8%, #fca100);"
 	},
 	{ "type" : "pause",
 		"speech" : "Good. Now it's time to get dry and go to bed. Hope you enjoyed it.",
-		"duration" : 1,
+		"duration" : 0,
 		"background": "radial-gradient(closest-side, #ff9e7c 88.24%, #ff6530 95.8%, #fc6100);"
 	}
 ];
@@ -76,7 +76,7 @@ function startInterval(){
 
 function initTimer(dur) {
 	duration = dur;
-	interval = dur / 2.5;
+	interval = dur / 2.7;
 	timeinterval();
 }
 
@@ -96,7 +96,7 @@ var stopSound = new Howl({
 
 function playNextScene(){
 
-	if (queue.length > 1){
+	if (queue.length >= 1){
 		currentScene = queue.pop();
 		document.querySelector('.bg').setAttribute('style', 'background: ' + currentScene.background + ';');
 		document.querySelector('.bg').classList.add('show');
