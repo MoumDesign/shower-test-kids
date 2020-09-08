@@ -1,3 +1,5 @@
+var noSleep = new NoSleep();
+
 var currentScene;
 var speech = new SpeechSynthesisUtterance();
 speech.rate = 0.8;
@@ -61,7 +63,7 @@ document.querySelector('.start-practice--btn').addEventListener('click', startIn
 function startInterval(){
 	speech.text = " ";
 	speechSynthesis.speak(speech);
-
+	noSleep.enable();
 	document.querySelector('.welcome--msg').classList.add('hide');
 	playNextScene();
 	
