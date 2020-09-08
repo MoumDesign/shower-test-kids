@@ -1,6 +1,6 @@
 var currentScene;
 var speech = new SpeechSynthesisUtterance();
-// speech.rate = 0.8;
+speech.rate = 0.8;
 setVoice("Samantha");
 
 var queue = [
@@ -44,6 +44,12 @@ function timeinterval(){
 			setTimeout(function(){
 				document.querySelector('.bg').classList.remove('blink');
 			}, 400);	
+		} else {
+			document.querySelector('.bg').classList.remove('show');
+			document.querySelector('.bg').classList.remove('blink');
+			setTimeout(function(){
+				document.querySelector('.bg').classList.add('blink');
+			}, 400);
 		}
 		setTimeout(timeinterval, interval * 1000);
 		interval = interval / 1.618;	
@@ -53,8 +59,13 @@ function timeinterval(){
 document.querySelector('.start-practice--btn').addEventListener('click', startInterval, false);
 
 function startInterval(){
+	speech.text = " ";
+	speechSynthesis.speak(speech);
+
 	document.querySelector('.welcome--msg').classList.add('hide');
 	playNextScene();
+	
+
 	// setTimeout(function(){initTimer(30)},6000);
 }
 
