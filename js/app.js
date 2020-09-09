@@ -1,4 +1,4 @@
-var noSleep = new NoSleep();
+
 
 var currentScene;
 var speech = new SpeechSynthesisUtterance();
@@ -8,12 +8,12 @@ setVoice("Samantha");
 var queue = [
 	{ "type" : "water",
 		"speech" : "Good evening. I’m glad you made it to this wind down shower practice. When you hear the first chime it's time to turn on the shower and soak your body. When the repeating chimes and light itensifies it's time to turn it off again.",
-		"duration" : 90,
+		"duration" : 60,
 		"background" : "radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 95.8%, #fca100);"
 	},
 	{ "type" : "pause",
 		"speech" : "Good job. I hope you are all soaked by now, because now it's time to soap your body.",
-		"duration" : 40,
+		"duration" : 30,
 		"background": "radial-gradient(closest-side, #ff9e7c 88.24%, #ff6530 95.8%, #fc6100);"
 	},
 	{ "type" : "water",
@@ -34,37 +34,45 @@ var interval;
 function timeinterval(){
 	
 	// sound.fade(1.0, 0.0, interval * 1000);
-	if (interval < 0.012){
+	if (interval = = 0) { //if dry mode
+		playNextScene();
+	}
+	else if (interval < 1.1){
 		sound.play();
 		stopSound.play();
 		playNextScene();
 	} else {
 		sound.play();
-		if (currentScene.type == "water"){
-			document.querySelector('.bg').classList.remove('show');
-			document.querySelector('.bg').classList.add('blink');
-			setTimeout(function(){
-				document.querySelector('.bg').classList.remove('blink');
-			}, 400);	
-		} else {
-			document.querySelector('.bg').classList.remove('show');
+	
+		document.querySelector('.bg').classList.add('blink');
+		setTimeout(function(){
 			document.querySelector('.bg').classList.remove('blink');
-			setTimeout(function(){
-				document.querySelector('.bg').classList.add('blink');
-			}, 400);
-		}
-		setTimeout(timeinterval, interval * 1000);
-		interval = interval / 1.618;	
+		}, 400);	
+		
+		setTimeout(timeinterval, (interval-1) * 1000);
+		interval = Math.pow(interval,1/1.5) * 0.8;	
 	}
 }
 
-document.querySelector('.start-practice--btn').addEventListener('click', startInterval, false);
+
+[].forEach.call(document.querySelectorAll('.btn'), function(btn){
+	btn.addEventListener('click', btnListener, false);	
+});
+
+function btnListener(e){
+	if (e.currentTarget.dataset.action == "start") {
+		startInterval();
+	} else {
+		document.querySelector('.modal:not(.hide)').classList.add('hide');
+		document.querySelector(e.currentTarget.dataset.action).classList.remove('hide');
+	}
+}
 
 function startInterval(){
 	speech.text = " ";
 	speechSynthesis.speak(speech);
-	noSleep.enable();
-	document.querySelector('.welcome--msg').classList.add('hide');
+	document.querySelector('.modal:not(.hide)').classList.add('hide');
+	document.body.classList.add('playing');
 	playNextScene();
 	
 
@@ -76,13 +84,13 @@ function startInterval(){
 
 function initTimer(dur) {
 	duration = dur;
-	interval = dur / 2.7;
+	interval = dur - Math.pow(dur,1/1.5);
 	timeinterval();
 }
 
 
 var sound = new Howl({
-  src: ['assets/singing-bowl-gong.mp3'],
+  src: ['assets/vibra.mp3'],
   autoplay: false,
   volume: 1.0
 });
@@ -99,7 +107,7 @@ function playNextScene(){
 	if (queue.length >= 1){
 		currentScene = queue.pop();
 		document.querySelector('.bg').setAttribute('style', 'background: ' + currentScene.background + ';');
-		document.querySelector('.bg').classList.add('show');
+		document.querySelector('.bg').classList.add('low');
 		setTimeout(function(){
 			
 			speech.text = currentScene.speech;

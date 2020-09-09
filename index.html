@@ -5,6 +5,7 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="apple-touch-startup-image" href="assets/bg.png"/>
     	<title>MeScapes Shower Practice</title>
     	
     	
@@ -22,19 +23,28 @@
             }
 
             body {
-            	background:black;
+            	
             	font-family: -apple-system, sans-serif;
             	font-size: 4.5vw;
             	line-height: 1.5;
+            	background: rgb(201, 132, 0);
+            	color: rgb(240, 200, 128);
+            }
+            body.playing {
+            	background: black;
             }
 
-            h2 {
+            h2, p span, .schedule-item {
             	color: rgb(221, 165, 64);
+            }
+
+            h2, p, .schedule {
+            	margin-bottom: 6vw;
             }
 
 
             .bg {
-            	transition: opacity 3s ease-out;
+            	transition: visibility 3s, opacity 3s ease-out;
             	position: fixed;
 							/*width: 40%;
 							height: 50%;
@@ -50,12 +60,19 @@
 							background: radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 95.8%, #fca100);
 							/*z-index: -1;*/
 							opacity: 0;
+							visibility: hidden;
 							/*animation: wiggle 0.5s ease-out forwards;*/
             }
 
-            .bg.blink, .bg.show {
+            .bg.low.blink, .bg.show {
             	transition: none;
             	opacity: 1;
+            	visibility: visible;
+            }
+
+            .bg.low {
+            	opacity: 0.5;
+            	visibility: visible;
             }
 
            
@@ -66,23 +83,25 @@
             	height: 100%;
             	display: flex;
             	flex-wrap: wrap;
-            	background: rgb(201, 132, 0);
-            	color: rgb(240, 200, 128);
+            	/*background: rgb(201, 132, 0);
+            	color: rgb(240, 200, 128);*/
             	/*justify-content: center;*/
             	align-items: flex-start;
             	align-content: flex-start;
             	padding: 10vw 7vw 7vw;
-            	transition: opacity 1s ease-out;
-            	position: relative;
+            	transition: visbility 1s, opacity 1s ease-out;
+            	visibility: visible;
+            	position: absolute;
             }
 
             .hide {
             	opacity: 0;
+            	visibility: hidden;
             }
 
             ol {
             	list-style: decimal;
-            	padding: 6vw;
+            	padding: 0 6vw;
             }
             li {
             	margin-bottom: 3vh;
@@ -94,13 +113,48 @@
             	/*margin-bottom: 0;*/
             }
 
-            .start-practice--btn {
+            .btn {
             	background: rgb(219, 157, 44);
             	/*color: rgb(201, 132, 0);*/
             	padding: 3vw 6vw;
             	border-radius: 6vw;
             	box-shadow: 0.25vw 0.25vw 9vw rgba(0,0,0,0.1);
             	cursor: pointer;
+            	margin-top: 2vw;
+            }
+
+            .schedule {
+	            font-size: 50%;
+	            text-align: center;
+	            display: flex;
+	            width: 110%;
+	            margin-left: -2.5%;
+	            margin-right: -5%;
+
+	            justify-content: space-evenly;
+	            border: 1px solid;
+	            border-top: none;
+	            border-bottom: none;
+	            border: none;
+	            border-color: rgb(221, 165, 64);
+            }
+      
+            .schedule-item {
+            	width: 20%;
+            	/*border-right: 1px solid;*/
+							padding: 2vw 1vw;
+            }
+            .schedule-item:nth-child(2n+2) {
+            	color: rgb(240, 200, 128);
+            	background: rgb(219, 157, 44);
+            	border: none;
+            }
+            .schedule-item:last-child {
+            	border-right: none;
+            }
+
+            .schedule-item span {
+            	font-size: 70%;
             }
 
 
@@ -108,19 +162,35 @@
     </head>
     <body>
     		<div class="bg"></div>
-        <div class="modal welcome--msg">
+        <div class="modal intro--msg">
         	<h2>Welcome to MeScapes Shower Practice.</h2>
+        	<p>One of the most efficient ways to lower your personal energy consumption, and carbon footprint, is to take shorter showers. </p>
+        	<p>On average, we spend 800 kWh every year on showers. That's enough energy to power your phone for over 100 years.</p>
+        	<p>For every minute we shorten our showers by, we can expect to save 120 kWh a year, which is equivalent of about 300 SEK.</p>
+        	<div class="btn" data-action=".about--msg">Whoa, I'm listenting...</div>
+        </div>
+				<div class="modal about--msg hide">
+        	<h2>About MeScapes Shower Practice.</h2>
+        	<p>We believe that shortening your shower should be a better experience than having your usual shower.</p><p>Therefore we are researching shower practices and how to create an awesome experience, while also saving the planet.</p>
+
+<p>Our first step on this journey is basic: <br>is it even doable to shower in 3 min?</p><p>To answer that, we are inviting a few of our family and friends to try this out, and let us know how you feel about it afterwards.</p>
+
+					<p><span>(With funding from Energimyndigheten)</span></p>
+        	<div class="btn" data-action=".start--msg">Okay, I'm ready to try.</div>
+        </div>
+        <div class="modal start--msg hide">
+        	<h2>Evening Wind Down Shower Practice.</h2>
+        	<p>This practice takes about 5 minutes to complete and does not include washing your hair. It consists of five phases:</p><div class="schedule"><div class="schedule-item" style="width:10%">Intro<br><span>30s</span></div><div class="schedule-item">Soak<br><span>60s</span></div><div class="schedule-item" style="width:10%">Soap<br><span>30s</span></div><div class="schedule-item" style="width:40%">Wash<br><span>120s</span></div><div class="schedule-item" style="width:20%">Dry<br><span>60s</span></div></div>
         	<p>Before we begin, please do the following:</p>
         	<ol>
-        		<li>Turn off silent mode.</li>
-        		<li>Turn your volume and screen brightness to the maximum level.</li>
+        		<li>Turn off silent mode and set your volume to the highest level.</li>
+        		<li>Turn off auto-lock in settings and set the screen brightness to the maximum level.</li>
         		<li>Make your bathroom as dark and cozy as possible.</li>
         	</ol>
-        	<div class="start-practice--btn">Okay, Let's Begin.</div>
+        	<div class="btn" data-action="start">Okay, Let's Begin.</div>
         </div>
 
      <script src="js/howler.min.js"></script>
-     <script src="js/nosleep.js"></script>
      <script src="js/app.js"></script>
     </body>
 </html>	
