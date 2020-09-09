@@ -34,7 +34,7 @@ var interval;
 function timeinterval(){
 	
 	// sound.fade(1.0, 0.0, interval * 1000);
-	if (interval = = 0) { //if dry mode
+	if (interval == 0) { //if dry mode
 		playNextScene();
 	}
 	else if (interval < 1.1){
