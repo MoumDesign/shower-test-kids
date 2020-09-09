@@ -50,7 +50,7 @@ function timeinterval(){
 		}, 400);	
 		
 		setTimeout(timeinterval, (interval-1) * 1000);
-		interval = Math.pow(interval,1/1.5) * 0.8;	
+		interval = Math.pow(interval,1/1.5);	
 	}
 }
 
@@ -84,7 +84,7 @@ function startInterval(){
 
 function initTimer(dur) {
 	duration = dur;
-	interval = dur - Math.pow(dur,1/1.5);
+	interval = dur - Math.pow(dur,1/1.5) * 0.8;
 	timeinterval();
 }
 
