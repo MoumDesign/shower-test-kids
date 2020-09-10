@@ -19,7 +19,7 @@
                 
             html {
                 -webkit-text-size-adjust : 100%;
-                background: black;
+                /*background: black;*/
             }
 
             body {
@@ -34,7 +34,7 @@
             	background: black;
             }
 
-            h2, p span, .schedule-item {
+            h2, .schedule-item {
             	color: rgb(221, 165, 64);
             }
 
@@ -80,7 +80,8 @@
 
             .modal {
             	width: 100%;
-            	height: 100%;
+            	/*height: 100vh;*/
+            	/*overflow-y: scroll;*/
             	display: flex;
             	flex-wrap: wrap;
             	/*background: rgb(201, 132, 0);
@@ -121,33 +122,39 @@
             	box-shadow: 0.25vw 0.25vw 9vw rgba(0,0,0,0.1);
             	cursor: pointer;
             	margin-top: 2vw;
+            	margin-bottom: 2vw;
             }
 
             .schedule {
-	            font-size: 50%;
+	            /*font-size: 50%;*/
 	            text-align: center;
-	            display: flex;
-	            width: 110%;
-	            margin-left: -2.5%;
-	            margin-right: -5%;
-
-	            justify-content: space-evenly;
-	            border: 1px solid;
-	            border-top: none;
-	            border-bottom: none;
-	            border: none;
-	            border-color: rgb(221, 165, 64);
+	            /*display: flex;*/
+	            width: 100%;
+	            height: 55vh;
+	            /*justify-content: space-evenly;*/
             }
       
             .schedule-item {
-            	width: 20%;
+            	height: 25%;
+            	width: 100%;
             	/*border-right: 1px solid;*/
-							padding: 2vw 1vw;
+							padding-bottom: 2.5vw;
+							display: flex;
+							justify-content: center;
+							align-items: center;
             }
-            .schedule-item:nth-child(2n+2) {
+
+            .schedule-item:last-child {
+            	padding-bottom: 0;
+            }
+           
+            .schedule-item:nth-child(2n+2) .schedule-title {
             	color: rgb(240, 200, 128);
             	background: rgb(219, 157, 44);
             	border: none;
+            }
+            .schedule-item:nth-child(2n+2) .schedule-time {
+            	color: rgb(240, 200, 128);
             }
             .schedule-item:last-child {
             	border-right: none;
@@ -155,6 +162,42 @@
 
             .schedule-item span {
             	font-size: 70%;
+            }
+
+            .schedule-time {
+            	font-size: 70%;
+            }
+
+            .schedule-container {
+		            display: flex;
+		            width: 100%;
+		            height: 100%;
+            }
+
+            .schedule-title {
+		            /*border: 1px solid;*/
+		            border-radius: 6vw;
+		            display: flex;
+		            justify-content: center;
+		            align-items: center;
+		            background: rgb(204, 142, 30);
+            }
+
+             .schedule-title, .schedule-time {
+		            width: 80%;
+		            /* border: 1px solid; */
+		            /* border-radius: 6vw; */
+		            display: flex;
+		            justify-content: center;
+		            align-items: center;
+            }
+
+            .schedule-time {
+		            font-size: 70%;
+		            line-height: 1;
+		            justify-content: flex-start;
+		            /*padding-left: 5vw;*/
+		            width: 13%;
             }
 
 
@@ -174,21 +217,56 @@
         	<p>We believe that shortening your shower should be a better experience than having your usual shower.</p><p>Therefore we are researching shower practices and how to create an awesome experience, while also saving the planet.</p>
 
 <p>Our first step on this journey is basic: <br>is it even doable to shower in 3 min?</p><p>To answer that, we are inviting a few of our family and friends to try this out, and let us know how you feel about it afterwards.</p>
-
-					<p><span>(With funding from Energimyndigheten)</span></p>
-        	<div class="btn" data-action=".start--msg">Okay, I'm ready to try.</div>
+        	<div class="btn" data-action=".instruction--msg">Okay, I'm ready to try.</div>
         </div>
-        <div class="modal start--msg hide">
-        	<h2>Evening Wind Down Shower Practice.</h2>
-        	<p>This practice takes about 5 minutes to complete and does not include washing your hair. It consists of five phases:</p><div class="schedule"><div class="schedule-item" style="width:10%">Intro<br><span>30s</span></div><div class="schedule-item">Soak<br><span>60s</span></div><div class="schedule-item" style="width:10%">Soap<br><span>30s</span></div><div class="schedule-item" style="width:40%">Wash<br><span>120s</span></div><div class="schedule-item" style="width:20%">Dry<br><span>60s</span></div></div>
+        <div class="modal instruction--msg hide">
+        	<h2>Shower Practice Instructions.</h2>
         	<p>Before we begin, please do the following:</p>
         	<ol>
         		<li>Turn off silent mode and set your volume to the highest level.</li>
-        		<li>Turn off auto-lock in settings and set the screen brightness to the maximum level.</li>
+        		<li>Set auto-lock to 5 minutes in settings and the screen brightness to the maximum level.</li>
         		<li>Make your bathroom as dark and cozy as possible.</li>
         	</ol>
-        	<div class="btn" data-action="start">Okay, Let's Begin.</div>
+        	<div class="btn" data-action=".start--msg">Okay, Let's Begin.</div>
         </div>
+        <div class="modal start--msg hide">
+        	<h2>MeScapes Shower Practice Test.</h2>
+        	<p>This practice takes about 4 minutes to complete and does not include washing your hair. It consists of five phases:</p>
+        	<div class="schedule">
+        		<div class="schedule-item" style="height:12.5%">
+        			<div class="schedule-container">
+        				<div class="schedule-time">30s</div>
+        				<div class="schedule-title">Intro</div>
+        		</div>
+        		</div>
+        		<div class="schedule-item">
+        			<div class="schedule-container">
+        				<div class="schedule-time">60s</div>
+        				<div class="schedule-title">Soak</div>
+        		</div>
+        		</div>
+        		<div class="schedule-item" style="height:12.5%">
+        			<div class="schedule-container">
+        				<div class="schedule-time">30s</div>
+        				<div class="schedule-title">Soap</div>
+        		</div>
+        		</div>
+        		<div class="schedule-item" style="height:37.5%">
+        			<div class="schedule-container">
+        				<div class="schedule-time">90s</div>
+        				<div class="schedule-title">Wash</div>
+        		</div>
+        		</div>
+        		<div class="schedule-item" style="height:12.5%">
+        			<div class="schedule-container">
+        			<div class="schedule-time">30s</div>
+        				<div class="schedule-title">Dry</div>
+        			</div>
+        	</div>
+        	</div>
+        	<div class="btn" data-action="start">Let's shower.</div>
+        </div>
+        
 
      <script src="js/howler.min.js"></script>
      <script src="js/app.js"></script>

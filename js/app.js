@@ -18,7 +18,7 @@ var queue = [
 	},
 	{ "type" : "water",
 		"speech" : "Time to rinse away all stress. Turn the water back on.",
-		"duration" : 120,
+		"duration" : 90,
 		"background" : "radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 95.8%, #fca100);"
 	},
 	{ "type" : "pause",
@@ -68,7 +68,7 @@ function btnListener(e){
 	}
 }
 
-function startInterval(){
+function startInterval() {
 	speech.text = " ";
 	speechSynthesis.speak(speech);
 	document.querySelector('.modal:not(.hide)').classList.add('hide');
@@ -115,7 +115,7 @@ function playNextScene(){
 				initTimer(currentScene.duration);
 			}
 			speechSynthesis.speak(speech);	
-		},2000);
+		},2500);
 	}
 	
 }
