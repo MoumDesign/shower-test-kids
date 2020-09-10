@@ -9,13 +9,13 @@ setVoice("Samantha");
 var queue = [
 	{ "type" : "pause",
 		"title" : "Intro",
-		"speech" : "Welcome. I’m glad you made it to this MeScapes Shower Practice. When you hear the first chime it's time to turn on the shower and soak your body. When the repeating chimes and light itensifies it's time to turn it off again.",
+		"speech" : "Welcome. I'm glad you made it to this MeScapes Shower Practice. When you hear the first chime it's time to turn on the shower and soak your body. And when you hear chimes again you've got 5 seconds to turn it back off.",
 		"duration" : 30,
 		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
 	},
 	{ "type" : "water",
 		"title" : "Soak",
-		"speech" : "Okay. It's time to turn on the water.",
+		"speech" : "Okay. It's time to turn on the water for 60 seconds.",
 		"duration" : 60,
 		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
 	},
@@ -27,7 +27,7 @@ var queue = [
 	},
 	{ "type" : "water",
 		"title" : "Wash",
-		"speech" : "Time to rinse away all stress. Turn the water back on.",
+		"speech" : "Time to rinse away all stress for 90 seconds. Turn the water back on.",
 		"duration" : 90,
 		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
 	},
@@ -73,6 +73,8 @@ function timeinterval(){
 function btnListener(e){
 	if (e.currentTarget.dataset.action == "start") {
 		startInterval();
+	} else if (e.currentTarget.dataset.action == "playChime") {
+		playChime();
 	} else {
 		document.querySelector('.modal:not(.hide)').classList.add('hide');
 		document.querySelector(e.currentTarget.dataset.action).classList.remove('hide');
@@ -95,8 +97,12 @@ function startInterval() {
 function initTimer(dur) {
 
 	duration = dur;
-	interval = dur - Math.pow(dur,1/1.5) * 0.8;
-	timeinterval();
+	interval = 5;
+	if (duration){
+			playChime();
+			setTimeout(playRepeatingChime,(dur-interval+1) * 1000);
+	}
+	
 	
 	timeleft = dur;
 
@@ -177,6 +183,37 @@ function playNextScene(){
 		},2500);
 	}
 	
+}
+
+function playRepeatingChime(){
+	playChime();
+
+	setTimeout(playChime, 1 * 1000);
+	setTimeout(playChime, 2 * 1000);
+	setTimeout(playChime, 2.5 * 1000);
+	setTimeout(playChime, 3.0 * 1000);
+	setTimeout(playChime, 3.5 * 1000);
+	setTimeout(playEndChime, 4 * 1000);
+	// setTimeout(playChime, 4.0 * 1000);
+	// setTimeout(playChime, 4.5 * 1000);
+	// setTimeout(playChime, 4.75 * 1000);
+	// setTimeout(playEndChime, 5 * 1000);
+
+}
+
+function playChime(){
+	sound.play();
+	
+		document.querySelector('.bg').classList.add('blink');
+		setTimeout(function(){
+			document.querySelector('.bg').classList.remove('blink');
+		}, 400);	
+}
+
+function playEndChime(){
+	playChime();
+	stopSound.play();
+	playNextScene();
 }
 
 function setVoice(x) {
