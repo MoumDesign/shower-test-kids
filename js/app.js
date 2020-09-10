@@ -1,30 +1,41 @@
 
-
+var timeleft = 0;
+var timeleftInterval;
 var currentScene;
 var speech = new SpeechSynthesisUtterance();
 speech.rate = 0.8;
 setVoice("Samantha");
 
 var queue = [
+	{ "type" : "pause",
+		"title" : "Intro",
+		"speech" : "Welcome. I’m glad you made it to this MeScapes Shower Practice. When you hear the first chime it's time to turn on the shower and soak your body. When the repeating chimes and light itensifies it's time to turn it off again.",
+		"duration" : 30,
+		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
+	},
 	{ "type" : "water",
-		"speech" : "Good evening. I’m glad you made it to this wind down shower practice. When you hear the first chime it's time to turn on the shower and soak your body. When the repeating chimes and light itensifies it's time to turn it off again.",
+		"title" : "Soak",
+		"speech" : "Okay. It's time to turn on the water.",
 		"duration" : 60,
-		"background" : "radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 95.8%, #fca100);"
+		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
 	},
 	{ "type" : "pause",
+		"title" : "Soap",
 		"speech" : "Good job. I hope you are all soaked by now, because now it's time to soap your body.",
 		"duration" : 30,
-		"background": "radial-gradient(closest-side, #ff9e7c 88.24%, #ff6530 95.8%, #fc6100);"
+		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
 	},
 	{ "type" : "water",
+		"title" : "Wash",
 		"speech" : "Time to rinse away all stress. Turn the water back on.",
 		"duration" : 90,
-		"background" : "radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 95.8%, #fca100);"
+		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
 	},
 	{ "type" : "pause",
+		"title" : "Dry",
 		"speech" : "Good. Now it's time to get dry and go to bed. Hope you enjoyed it.",
 		"duration" : 0,
-		"background": "radial-gradient(closest-side, #ff9e7c 88.24%, #ff6530 95.8%, #fc6100);"
+		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
 	}
 ];
 queue.reverse();
@@ -73,9 +84,8 @@ function startInterval() {
 	speechSynthesis.speak(speech);
 	document.querySelector('.modal:not(.hide)').classList.add('hide');
 	document.body.classList.add('playing');
-	playNextScene();
-	
 
+	playIntro();
 	// setTimeout(function(){initTimer(30)},6000);
 }
 
@@ -83,9 +93,26 @@ function startInterval() {
 
 
 function initTimer(dur) {
+
 	duration = dur;
 	interval = dur - Math.pow(dur,1/1.5) * 0.8;
 	timeinterval();
+	
+	timeleft = dur;
+
+	timeleftInterval = setInterval(timeleftUpdate,1000);
+
+	
+}
+
+function timeleftUpdate(){
+	if (timeleft) {
+		document.querySelector('.scene--time-left').innerText = timeleft;
+		timeleft--;
+	} else {
+		document.querySelector('.scene--time-left').innerText = '';
+		clearInterval(timeleftInterval);
+	}
 }
 
 
@@ -101,20 +128,52 @@ var stopSound = new Howl({
   volume: 1.0
 });
 
-
-function playNextScene(){
+function playIntro(){
 
 	if (queue.length >= 1){
 		currentScene = queue.pop();
 		document.querySelector('.bg').setAttribute('style', 'background: ' + currentScene.background + ';');
 		document.querySelector('.bg').classList.add('low');
+		document.querySelector('.scene--title').innerText = currentScene.title;
+		setTimeout(function(){
+			
+			speech.text = currentScene.speech;
+			speech.onend = function(){
+				document.querySelector('.bg').classList.remove('low');
+				setTimeout(playNextScene,1500);
+			}
+			speechSynthesis.speak(speech);
+
+			
+		},2000);
+	}
+	
+}
+
+
+
+function playNextScene(){
+
+
+	if (queue.length >= 1){
+
+		currentScene = queue.pop();
+		document.querySelector('.bg').setAttribute('style', 'background: ' + currentScene.background + ';');
+		document.querySelector('.bg').classList.add('low');
+		
+		clearInterval(timeleftInterval);
+		timeleft = currentScene.duration;
+		timeleftUpdate();	
+		document.querySelector('.scene--title').innerText = currentScene.title;
+
 		setTimeout(function(){
 			
 			speech.text = currentScene.speech;
 			speech.onend = function(){
 				initTimer(currentScene.duration);
 			}
-			speechSynthesis.speak(speech);	
+			speechSynthesis.speak(speech);
+			
 		},2500);
 	}
 	
