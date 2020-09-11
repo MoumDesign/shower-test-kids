@@ -9,31 +9,31 @@ setVoice("Samantha");
 var queue = [
 	{ "type" : "pause",
 		"title" : "Intro",
-		"speech" : "Welcome. I'm glad you made it to this MeScapes Shower Practice. When you hear the first chime it's time to turn on the shower and soak your body. And when you hear chimes again you've got 5 seconds to turn it back off.",
+		"speech" : "Welcome. My team and I are glad you want to be part of this very first Shower test. When you hear the first chime it’s time to turn on the shower and rinse your body. And when you hear the chimes again you’ve got 10 seconds to turn it back off.",
 		"duration" : 30,
 		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
 	},
 	{ "type" : "water",
 		"title" : "Soak",
-		"speech" : "Okay. It's time to turn on the water for 60 seconds.",
-		"duration" : 60,
+		"speech" : "Okay. It’s time to turn on the water for 60 seconds and rinse.",
+		"duration" : 45,
 		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
 	},
 	{ "type" : "pause",
 		"title" : "Soap",
-		"speech" : "Good job. I hope you are all soaked by now, because now it's time to soap your body.",
-		"duration" : 30,
+		"speech" : "I hope you managed to rinse, because now it’s time to soap your body.",
+		"duration" : 45,
 		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
 	},
 	{ "type" : "water",
 		"title" : "Wash",
-		"speech" : "Time to rinse away all stress for 90 seconds. Turn the water back on.",
+		"speech" : "Time to rinse for 90 seconds. Turn the water back on and get started.",
 		"duration" : 90,
 		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
 	},
 	{ "type" : "pause",
 		"title" : "Dry",
-		"speech" : "Good. Now it's time to get dry and go to bed. Hope you enjoyed it.",
+		"speech" : "Good. Now it’s time to get dry. I think this might have been the first time a robot guided you to shower?",
 		"duration" : 0,
 		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
 	}
@@ -71,10 +71,12 @@ function timeinterval(){
 });
 
 function btnListener(e){
+	sound.stop();
+	stopSound.stop();
 	if (e.currentTarget.dataset.action == "start") {
 		startInterval();
-	} else if (e.currentTarget.dataset.action == "playChime") {
-		playChime();
+	} else if (e.currentTarget.dataset.action == "playRepeatingChime") {
+		playRepeatingChime();
 	} else {
 		document.querySelector('.modal:not(.hide)').classList.add('hide');
 		document.querySelector(e.currentTarget.dataset.action).classList.remove('hide');
@@ -213,7 +215,7 @@ function playChime(){
 function playEndChime(){
 	playChime();
 	stopSound.play();
-	playNextScene();
+	if (document.classList.contains('playing')) playNextScene();
 }
 
 function setVoice(x) {
