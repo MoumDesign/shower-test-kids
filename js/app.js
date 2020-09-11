@@ -11,59 +11,37 @@ var queue = [
 		"title" : "Intro",
 		"speech" : "Welcome. My team and I are glad you want to be part of this very first Shower test. When you hear the first chime it’s time to turn on the shower and rinse your body. And when you hear the chimes again you’ve got 10 seconds to turn it back off.",
 		"duration" : 30,
-		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
+		"background" : "#ffb430;"
 	},
 	{ "type" : "water",
-		"title" : "Soak",
-		"speech" : "Okay. It’s time to turn on the water for 60 seconds and rinse.",
+		"title" : "Rinse",
+		"speech" : "Okay. It’s time to turn on the water for 45 seconds and rinse.",
 		"duration" : 45,
-		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
+		"background" : "#ff6530;"
 	},
 	{ "type" : "pause",
 		"title" : "Soap",
 		"speech" : "I hope you managed to rinse, because now it’s time to soap your body.",
 		"duration" : 45,
-		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
+		"background" : "#ffb430;"
 	},
 	{ "type" : "water",
-		"title" : "Wash",
+		"title" : "Rinse",
 		"speech" : "Time to rinse for 90 seconds. Turn the water back on and get started.",
 		"duration" : 90,
-		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
+		"background" : "#ff6530;"
 	},
 	{ "type" : "pause",
 		"title" : "Dry",
 		"speech" : "Good. Now it’s time to get dry. I think this might have been the first time a robot guided you to shower?",
 		"duration" : 0,
-		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
+		"background" : "#ffb430;"
 	}
 ];
 queue.reverse();
 
 var duration;
 var interval;
-function timeinterval(){
-	
-	// sound.fade(1.0, 0.0, interval * 1000);
-	if (interval == 0) { //if dry mode
-		playNextScene();
-	}
-	else if (interval < 1.1){
-		sound.play();
-		stopSound.play();
-		playNextScene();
-	} else {
-		sound.play();
-	
-		document.querySelector('.bg').classList.add('blink');
-		setTimeout(function(){
-			document.querySelector('.bg').classList.remove('blink');
-		}, 400);	
-		
-		setTimeout(timeinterval, (interval-1) * 1000);
-		interval = Math.pow(interval,1/1.5);	
-	}
-}
 
 
 [].forEach.call(document.querySelectorAll('.btn'), function(btn){
@@ -99,7 +77,7 @@ function startInterval() {
 function initTimer(dur) {
 
 	duration = dur;
-	interval = 5;
+	interval = 10;
 	if (duration){
 			playChime();
 			setTimeout(playRepeatingChime,(dur-interval+1) * 1000);
@@ -189,13 +167,18 @@ function playNextScene(){
 
 function playRepeatingChime(){
 	playChime();
+	// setTimeout(playChime, 2 * 1000);
+	setTimeout(playChime, 3 * 1000);
+	
+	setTimeout(playChime, 5 * 1000);
 
-	setTimeout(playChime, 1 * 1000);
-	setTimeout(playChime, 2 * 1000);
-	setTimeout(playChime, 2.5 * 1000);
-	setTimeout(playChime, 3.0 * 1000);
-	setTimeout(playChime, 3.5 * 1000);
-	setTimeout(playEndChime, 4 * 1000);
+
+	setTimeout(playChime, 1 * 1000 + 5000);
+	setTimeout(playChime, 2 * 1000 + 5000);
+	setTimeout(playChime, 2.5 * 1000 + 5000);
+	setTimeout(playChime, 3.0 * 1000 + 5000);
+	setTimeout(playChime, 3.5 * 1000 + 5000);
+	setTimeout(playEndChime, 4 * 1000 + 5000);
 	// setTimeout(playChime, 4.0 * 1000);
 	// setTimeout(playChime, 4.5 * 1000);
 	// setTimeout(playChime, 4.75 * 1000);
@@ -215,7 +198,7 @@ function playChime(){
 function playEndChime(){
 	playChime();
 	stopSound.play();
-	if (document.classList.contains('playing')) playNextScene();
+	if (document.body.classList.contains('playing')) playNextScene();
 }
 
 function setVoice(x) {
