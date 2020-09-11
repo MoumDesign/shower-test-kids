@@ -34,7 +34,7 @@ var queue = [
 	{ "type" : "pause",
 		"title" : "Dry",
 		"speech" : "Good. Now it’s time to get dry. I think this might have been the first time a robot guided you to shower?",
-		"duration" : 0,
+		"duration" : 45,
 		"background" : "#ffb430;"
 	}
 ];
@@ -55,6 +55,9 @@ function btnListener(e){
 		startInterval();
 	} else if (e.currentTarget.dataset.action == "playRepeatingChime") {
 		playRepeatingChime();
+	} else if (e.currentTarget.dataset.action == "reload"){
+			location.reload();
+			return false;
 	} else {
 		document.querySelector('.modal:not(.hide)').classList.add('hide');
 		document.querySelector(e.currentTarget.dataset.action).classList.remove('hide');
@@ -161,6 +164,12 @@ function playNextScene(){
 			speechSynthesis.speak(speech);
 			
 		},2500);
+	} else {
+		document.body.classList.remove('playing');
+		document.querySelector('.bg').classList.remove('low');
+		setTimeout(function(){
+			document.querySelector('.thanks--msg').classList.remove('hide');
+		}, 2000);
 	}
 	
 }
