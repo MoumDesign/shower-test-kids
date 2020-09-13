@@ -4,6 +4,7 @@ var timeleftInterval;
 var currentScene;
 var speech = new SpeechSynthesisUtterance();
 speech.rate = 0.8;
+speech.lang = 'en-US';
 setVoice("Samantha");
 
 var queue = [
@@ -21,7 +22,7 @@ var queue = [
 	},
 	{ "type" : "pause",
 		"title" : "Soap",
-		"speech" : "I hope you managed to rinse, because now it’s time to soap your body.",
+		"speech" : "I hope you managed to rinse, because now it’s time to wash your body with Soap.",
 		"duration" : 45,
 		"background" : "#ffb430;"
 	},
