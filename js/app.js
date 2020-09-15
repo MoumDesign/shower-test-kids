@@ -1,221 +1,184 @@
 
-var timeleft = 0;
-var timeleftInterval;
-var currentScene;
+var timeLeft = 0; // timeleft for the countdown timer
+var timeLeftInterval;
+var currentPhase;
+var scene;
+
+/* set up the text to speech engine */
 var speech = new SpeechSynthesisUtterance();
 speech.rate = 0.8;
+speech.lang = 'en-US';
 setVoice("Samantha");
 
-var queue = [
-	{ "type" : "pause",
-		"title" : "Intro",
-		"speech" : "Welcome. I'm glad you made it to this MeScapes Shower Practice. When you hear the first chime it's time to turn on the shower and soak your body. And when you hear chimes again you've got 5 seconds to turn it back off.",
-		"duration" : 30,
-		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
-	},
-	{ "type" : "water",
-		"title" : "Soak",
-		"speech" : "Okay. It's time to turn on the water for 60 seconds.",
-		"duration" : 60,
-		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
-	},
-	{ "type" : "pause",
-		"title" : "Soap",
-		"speech" : "Good job. I hope you are all soaked by now, because now it's time to soap your body.",
-		"duration" : 30,
-		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
-	},
-	{ "type" : "water",
-		"title" : "Wash",
-		"speech" : "Time to rinse away all stress for 90 seconds. Turn the water back on.",
-		"duration" : 90,
-		"background" : "radial-gradient(closest-side, #ff9e7c 58.4%, #ff6530 100%, #fc6100);"
-	},
-	{ "type" : "pause",
-		"title" : "Dry",
-		"speech" : "Good. Now it's time to get dry and go to bed. Hope you enjoyed it.",
-		"duration" : 0,
-		"background" : "radial-gradient(closest-side, #ffcf7c 58.4%, #ffb430 100%, #fca100);"
-	}
-];
-queue.reverse();
 
-var duration;
-var interval;
-function timeinterval(){
-	
-	// sound.fade(1.0, 0.0, interval * 1000);
-	if (interval == 0) { //if dry mode
-		playNextScene();
-	}
-	else if (interval < 1.1){
-		sound.play();
-		stopSound.play();
-		playNextScene();
-	} else {
-		sound.play();
-	
-		document.querySelector('.bg').classList.add('blink');
-		setTimeout(function(){
-			document.querySelector('.bg').classList.remove('blink');
-		}, 400);	
-		
-		setTimeout(timeinterval, (interval-1) * 1000);
-		interval = Math.pow(interval,1/1.5);	
-	}
-}
+/* load all sounds */
 
-
-[].forEach.call(document.querySelectorAll('.btn'), function(btn){
-	btn.addEventListener('click', btnListener, false);	
-});
-
-function btnListener(e){
-	if (e.currentTarget.dataset.action == "start") {
-		startInterval();
-	} else if (e.currentTarget.dataset.action == "playChime") {
-		playChime();
-	} else {
-		document.querySelector('.modal:not(.hide)').classList.add('hide');
-		document.querySelector(e.currentTarget.dataset.action).classList.remove('hide');
-	}
-}
-
-function startInterval() {
-	speech.text = " ";
-	speechSynthesis.speak(speech);
-	document.querySelector('.modal:not(.hide)').classList.add('hide');
-	document.body.classList.add('playing');
-
-	playIntro();
-	// setTimeout(function(){initTimer(30)},6000);
-}
-
-
-
-
-function initTimer(dur) {
-
-	duration = dur;
-	interval = 5;
-	if (duration){
-			playChime();
-			setTimeout(playRepeatingChime,(dur-interval+1) * 1000);
-	}
-	
-	
-	timeleft = dur;
-
-	timeleftInterval = setInterval(timeleftUpdate,1000);
-
-	
-}
-
-function timeleftUpdate(){
-	if (timeleft) {
-		document.querySelector('.scene--time-left').innerText = timeleft;
-		timeleft--;
-	} else {
-		document.querySelector('.scene--time-left').innerText = '';
-		clearInterval(timeleftInterval);
-	}
-}
-
-
-var sound = new Howl({
+var chime = new Howl({
   src: ['assets/vibra.mp3'],
   autoplay: false,
   volume: 1.0
 });
 
-var stopSound = new Howl({
+var endChime = new Howl({
   src: ['assets/stop-bowl.m4a'],
   autoplay: false,
   volume: 1.0
 });
 
-function playIntro(){
+/* ~~ Scene handler ~~ */
 
-	if (queue.length >= 1){
-		currentScene = queue.pop();
-		document.querySelector('.bg').setAttribute('style', 'background: ' + currentScene.background + ';');
-		document.querySelector('.bg').classList.add('low');
-		document.querySelector('.scene--title').innerText = currentScene.title;
-		setTimeout(function(){
-			
-			speech.text = currentScene.speech;
-			speech.onend = function(){
-				document.querySelector('.bg').classList.remove('low');
-				setTimeout(playNextScene,1500);
-			}
-			speechSynthesis.speak(speech);
+/* prepare for scene to be played */
+function initScene() {
 
-			
-		},2000);
-	}
+	speech.text = " ";
+	speechSynthesis.speak(speech); // workaround for allowing us to use text to speech at a later stage without needing another click event
 	
+	document.querySelector('.modal:not(.hide)').classList.add('hide'); // hide current view
+	document.body.classList.add('playing'); // present sceneview
+	
+	fetch("scene.json") // load scene data
+	  .then(response => response.json())
+	  .then(json => playScene(json));
 }
 
 
-
-function playNextScene(){
-
-
-	if (queue.length >= 1){
-
-		currentScene = queue.pop();
-		document.querySelector('.bg').setAttribute('style', 'background: ' + currentScene.background + ';');
-		document.querySelector('.bg').classList.add('low');
-		
-		clearInterval(timeleftInterval);
-		timeleft = currentScene.duration;
-		timeleftUpdate();	
-		document.querySelector('.scene--title').innerText = currentScene.title;
-
-		setTimeout(function(){
-			
-			speech.text = currentScene.speech;
-			speech.onend = function(){
-				initTimer(currentScene.duration);
-			}
-			speechSynthesis.speak(speech);
-			
-		},2500);
-	}
-	
+function playScene(json){
+	scene = json.queue;
+	scene.reverse();
+	playNextPhase();
 }
 
+function playNextPhase(){
+	if (scene.length >= 1){ // if there are more phases to be played
+		currentPhase = scene.pop();
+		presentPhase();
+		setTimeout(speakAndStartTimer, 2.5 * 1000); // wait 2.5 seconds before speaking and going into next phase to prevent the sound of water disturbing
+	} else {
+		presentEnding();
+	}
+}
+
+function presentPhase(){
+	document.querySelector('.bg').setAttribute('style', 'background: ' + currentPhase.background + ';');
+	document.querySelector('.bg').classList.add('low');
+	document.querySelector('.scene--title').innerText = currentPhase.title;
+	
+	if (currentPhase.type !== "intro"){
+		/* reset countdown timer for new phase */
+		clearTimeleftInterval();
+		timeLeft = currentPhase.duration;
+		timeLeftUpdate();	
+	}
+}
+
+/* transition to ending message */
+function presentEnding(){
+	document.body.classList.remove('playing');
+	document.querySelector('.bg').classList.remove('low');
+	setTimeout(function(){
+		document.querySelector('.thanks--msg').classList.remove('hide');
+	}, 2000);
+}
+
+/* Speaks the phase text and then starts the timers */
+function speakAndStartTimer(){
+	speech.text = currentPhase.speech;
+	speech.onend = function(){
+		if ( currentPhase.type === "intro"){ // go straight to next scene if intro
+			document.querySelector('.bg').classList.remove('low');
+			setTimeout(playNextPhase, 1.5 * 1000);
+		} else { // else start the timer and phase
+			startTimer(currentPhase.duration);	
+		}
+	}
+	speechSynthesis.speak(speech);
+}
+
+/* Initiate and starts all timers */
+function startTimer(duration) {
+	playChime(); // plays tune for phase beginning
+	setTimeout(playRepeatingChime,(duration - 10) * 1000); // schedules ending chimes to play 10 seconds before phase ends.
+	setTimeout(playNextPhase, duration * 1000); // schedules to play next phase after the phase is over 
+	
+	/* initiating countdown timer, that updates on the screen every second */
+	timeLeftInterval = setInterval(timeLeftUpdate,1000);
+
+}
+	
+function timeLeftUpdate(){
+	if (timeLeft) {
+		document.querySelector('.scene--time-left').innerText = timeLeft;
+		timeLeft--;
+	}
+}
+function clearTimeleftInterval(){
+	document.querySelector('.scene--time-left').innerText = '';
+	clearInterval(timeLeftInterval);
+}
+
+
+/* ~~ Sound handling ~~ */
+
+/* Repeating sound that gets played in the end */
 function playRepeatingChime(){
 	playChime();
-
-	setTimeout(playChime, 1 * 1000);
-	setTimeout(playChime, 2 * 1000);
-	setTimeout(playChime, 2.5 * 1000);
-	setTimeout(playChime, 3.0 * 1000);
-	setTimeout(playChime, 3.5 * 1000);
-	setTimeout(playEndChime, 4 * 1000);
-	// setTimeout(playChime, 4.0 * 1000);
-	// setTimeout(playChime, 4.5 * 1000);
-	// setTimeout(playChime, 4.75 * 1000);
-	// setTimeout(playEndChime, 5 * 1000);
-
+	setTimeout(playChime, 3     * 1000);
+	setTimeout(playChime, 5     * 1000);
+	setTimeout(playChime, 7     * 1000);
+	setTimeout(playChime, 8     * 1000);
+	setTimeout(playChime, 9     * 1000);
+	setTimeout(playChime, 9.5   * 1000);
+	setTimeout(playEndChime, 10 * 1000);
 }
 
+/* playing the chime sound and blinks the screen/light once */
 function playChime(){
-	sound.play();
-	
-		document.querySelector('.bg').classList.add('blink');
-		setTimeout(function(){
-			document.querySelector('.bg').classList.remove('blink');
-		}, 400);	
+	chime.play();
+	blinkScreen();
 }
 
+/* playing the longer end sound together with the regular one when the phase is over */
 function playEndChime(){
 	playChime();
-	stopSound.play();
-	playNextScene();
+	endChime.play();
 }
 
+/* blinks the screen quickly */
+function blinkScreen(){
+	document.querySelector('.bg').classList.add('blink');
+	setTimeout(function(){
+		document.querySelector('.bg').classList.remove('blink');
+	}, 400);	
+}
+
+
+/* ~~ Event Handlers ~~ */
+
+[].forEach.call(document.querySelectorAll('.btn'), function(btn){
+	btn.addEventListener('click', buttonPress, false);	
+});
+
+function buttonPress(e){
+	action = e.currentTarget.dataset.action;
+	target = e.currentTarget.dataset.target;
+
+	if ( action == "initScene") {
+		initScene();
+	} else if ( action == "playRepeatingChime") {
+		playRepeatingChime();
+	} else if ( action == "reloadApp"){
+			location.reload();
+			return false;
+	} else {
+		document.querySelector('.modal:not(.hide)').classList.add('hide');
+		document.querySelector(target).classList.remove('hide');
+	}
+}
+
+
+/* ~~ Helper functions ~~ */
+
+/* choose a specific text to speech voice */
 function setVoice(x) {
 	var voices = speechSynthesis.getVoices();
 	for (var i = 0;i< voices.length;i++){
@@ -225,3 +188,5 @@ function setVoice(x) {
 		}
 	}
 }
+
+

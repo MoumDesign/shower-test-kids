@@ -6,324 +6,127 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <link rel="apple-touch-startup-image" href="assets/bg.png"/>
-    	<title>MeScapes Shower Practice</title>
-    	
-    	
-    	<!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
-        <style type="text/css">
-
-            /* RESET */
-            *,*:before,*:after{box-sizing:border-box;}html,body{margin:0;height:100%;}a{text-decoration:inherit;color:inherit;}
-            p,h1,h2,h3,h4,h5,h6{margin:0;font-size:inherit;font-weight:inherit;}ul,ol{margin:0;padding:0;list-style-type:none;}
-            img{display:inline-block;border:0;max-width:100%;height:auto;vertical-align:middle;}figure{margin:0;}
-                
-            html {
-                -webkit-text-size-adjust : 100%;
-                /*background: black;*/
-            }
-
-            body {
-            	
-            	font-family: -apple-system, sans-serif;
-            	font-size: 4.5vw;
-            	line-height: 1.5;
-            	background: rgb(201, 132, 0);
-            	color: rgb(240, 200, 128);
-            }
-            body.playing {
-            	background: black;
-            }
-
-            h2, .schedule-item {
-            	color: rgb(221, 165, 64);
-            }
-
-            h2, p, .schedule {
-            	margin-bottom: 6vw;
-            }
-
-
-            .bg {
-            	transition: visibility 3s, opacity 3s ease-out;
-            	position: fixed;
-							/*width: 40%;
-							height: 50%;
-							left: 50%;
-							top: 50%;
-							transform: translate3d(-50%,-50%,0);
-							border-radius: 100%;
-							box-shadow: 0 0 20vw 30vw;
-							background: rgb(255, 186, 59);
-							color: rgb(255, 186, 59);*/
-							width: 100%;
-							height: 100%;
-
-							width: 150%;
-							 height: 200%; 
-							left: -25%;
-							/*background: radial-gradient(closest-side, #ffcf7c 88.24%, #ffb430 100%, #fca100)*/
-							/*z-index: -1;*/
-							opacity: 0;
-							visibility: hidden;
-							/*animation: wiggle 0.5s ease-out forwards;*/
-            }
-
-            .bg.low.blink, .bg.show {
-            	transition: none;
-            	opacity: 1;
-            	visibility: visible;
-            	/*filter: brightness(1.3);*/
-            }
-
-            .bg.low {
-            	opacity: 0.65;
-            	visibility: visible;
-            	/*filter:none;*/
-            	/*animation: sway 0.2s infinite;*/
-            }
-
-
-
-
-           
-
-
-            .modal {
-            	width: 100%;
-            	/*height: 100vh;*/
-            	/*overflow-y: scroll;*/
-            	display: flex;
-            	flex-wrap: wrap;
-            	/*background: rgb(201, 132, 0);
-            	color: rgb(240, 200, 128);*/
-            	/*justify-content: center;*/
-            	align-items: flex-start;
-            	align-content: flex-start;
-            	padding: 10vw 7vw 7vw;
-            	transition: visbility 1s, opacity 1s ease-out;
-            	visibility: visible;
-            	position: absolute;
-            }
-
-            .hide {
-            	opacity: 0;
-            	visibility: hidden;
-            }
-
-            ol {
-            	list-style: decimal;
-            	padding: 0 6vw;
-            }
-            li {
-            	margin-bottom: 3vh;
-            	padding: 0;
-            	line-height: 1.3;
-            }
-
-            li:last-child {
-            	/*margin-bottom: 0;*/
-            }
-
-            .btn {
-            	background: rgb(219, 157, 44);
-            	/*color: rgb(201, 132, 0);*/
-            	padding: 3vw 6vw;
-            	border-radius: 6vw;
-            	box-shadow: 0.25vw 0.25vw 9vw rgba(0,0,0,0.1);
-            	cursor: pointer;
-            	margin-top: 2vw;
-            	margin-bottom: 2vw;
-            }
-
-            .btn.secondary {
-            	background: rgb(204, 142, 30);
-            	margin-left: 2vw;
-            	color: rgb(221, 165, 64);
-            }
-
-            .schedule {
-	            /*font-size: 50%;*/
-	            text-align: center;
-	            /*display: flex;*/
-	            width: 100%;
-	            height: 55vh;
-	            /*justify-content: space-evenly;*/
-            }
-      
-            .schedule-item {
-            	height: 25%;
-            	width: 100%;
-            	/*border-right: 1px solid;*/
-							padding-bottom: 2.5vw;
-							display: flex;
-							justify-content: center;
-							align-items: center;
-            }
-
-            .schedule-item:last-child {
-            	padding-bottom: 0;
-            }
-           
-            .schedule-item:nth-child(2n+2) .schedule-title {
-            	color: rgb(240, 200, 128);
-            	background: rgb(219, 157, 44);
-            	border: none;
-            }
-            .schedule-item:nth-child(2n+2) .schedule-time {
-            	color: rgb(240, 200, 128);
-            }
-            .schedule-item:last-child {
-            	border-right: none;
-            }
-
-            .schedule-item span {
-            	font-size: 70%;
-            }
-
-            .schedule-time {
-            	font-size: 70%;
-            }
-
-            .schedule-container {
-		            display: flex;
-		            width: 100%;
-		            height: 100%;
-            }
-
-            .schedule-title {
-		            /*border: 1px solid;*/
-		            border-radius: 6vw;
-		            display: flex;
-		            justify-content: center;
-		            align-items: center;
-		            background: rgb(204, 142, 30);
-            }
-
-             .schedule-title, .schedule-time {
-		            width: 80%;
-		            /* border: 1px solid; */
-		            /* border-radius: 6vw; */
-		            display: flex;
-		            justify-content: center;
-		            align-items: center;
-            }
-
-            .schedule-time {
-		            font-size: 70%;
-		            line-height: 1;
-		            justify-content: flex-start;
-		            /*padding-left: 5vw;*/
-		            width: 13%;
-            }
-
-            .scene--title, .scene--time-left {
-            	opacity: 0;
-            	visibility: hidden;
-            	transition: visibility 3s, opacity 3s ease-out;
-            }
-
-            .playing .scene--title,
-            .playing .scene--time-left {
-            	opacity: 1;
-            	visibility: visible;
-            }
-            .scene {
-            	color: white;
-            }
-            .scene--title, .scene--time-left {
-	            width: 100%;
-	            text-align: center;
-	            position: fixed;
-	            font-size: 1.6rem;
-	            padding: 10vw;
-	            text-shadow: 0 0 12vw;
-            }
-
-            .scene--time-left {
-            	top: 50%;
-            	transform: translate3d(0,-50%,0);
-            	font-size: 3rem;
-            }
-
-
-           /* .scene {
-            	display: none;
-            }
-					
-            .playing .scene {
-            	display: block;
-            }*/
-
-
-        </style>
+    	<title>MeScapes Shower Test</title>
+    	<link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-    		<div class="scene">
-    			<div class="bg"></div>
-    			<div class="scene--title"></div>
-    			<div class="scene--time-left"></div>
-				</div>
-        <div class="modal intro--msg">
-        	<h2>Welcome to MeScapes Shower Practice.</h2>
-        	<p>One of the most efficient ways to lower your personal energy consumption, and carbon footprint, is to take shorter showers. </p>
-        	<p>On average, we spend 800 kWh every year on showers. That's enough energy to power your phone for over 100 years.</p>
-        	<p>For every minute we shorten our showers by, we can expect to save 120 kWh a year, which is equivalent of about 300 SEK.</p>
-        	<div class="btn" data-action=".about--msg">Whoa, I'm listenting...</div>
-        </div>
-				<div class="modal about--msg hide">
-        	<h2>About MeScapes Shower Practice.</h2>
-        	<p>We believe that shortening your shower should be a better experience than having your usual shower.</p><p>Therefore we are researching shower practices and how to create an awesome experience, while also saving the planet.</p>
+		<div class="scene">
+			<div class="bg"></div>
+			<div class="scene--title"></div>
+			<div class="scene--time-left"></div>
+		</div>
 
-<p>Our first step on this journey is basic: <br>is it even doable to shower in 3 min?</p><p>To answer that, we are inviting a few of our family and friends to try this out, and let us know how you feel about it afterwards.</p>
-        	<div class="btn" data-action=".instruction--msg">Okay, I'm ready to try.</div>
-        </div>
-        <div class="modal instruction--msg hide">
-        	<h2>Shower Practice Instructions.</h2>
+        <div class="modal intro--msg">
+        	<h2>Welcome to MeScapes Shower Test</h2>
         	<p>Before we begin, please do the following:</p>
-        	<ol>
-        		<li>Turn off silent mode and set your volume to the highest level.</li>
-        		<li>Set auto-lock to 5 minutes in settings and the screen brightness to the maximum level.</li>
-        		<li>Make your bathroom as dark and cozy as possible.</li>
-        	</ol>
-        	<div class="btn" data-action=".start--msg">Okay, Let's Begin.</div>
-        	<div class="btn secondary" data-action="playChime">Test sound.</div>
+            <ol>
+                <li>Make your bathroom as dark and cozy as possible.</li>
+                <li>Set auto-lock to 5 minutes in settings and the screen brightness to the maximum level.</li>
+                <li>Turn off silent mode and set your volume to the highest level.</li>
+            </ol>
+            <div class="arrows">
+        	   <div class="btn" data-target=".phase--msg">
+                    <img src="assets/arrow-right.svg" alt="">
+                </div>
+            </div>
         </div>
-        <div class="modal start--msg hide">
-        	<h2>MeScapes Shower Practice Test.</h2>
-        	<p>This practice takes about 4 minutes to complete and does not include washing your hair. It consists of five phases:</p>
+
+        <div class="modal phase--msg hide">
+        	<h2>Phases</h2>
         	<div class="schedule">
         		<div class="schedule-item" style="height:12.5%">
         			<div class="schedule-container">
         				<div class="schedule-time">30s</div>
-        				<div class="schedule-title">Intro</div>
+        				<div class="schedule-title">
+                            <img class="icon" src="assets/ear-hearing.svg" alt=""> Intro
+                        </div>
+                    </div>
         		</div>
-        		</div>
-        		<div class="schedule-item">
+        		<div class="schedule-item" style="height:18.75%">
         			<div class="schedule-container">
-        				<div class="schedule-time">60s</div>
-        				<div class="schedule-title">Soak</div>
+        				<div class="schedule-time">45s</div>
+        				<div class="schedule-title">
+                            <img class="icon" src="assets/water-outline.svg" alt="">Rinse
+                        </div>
+                    </div>
         		</div>
-        		</div>
-        		<div class="schedule-item" style="height:12.5%">
+        		<div class="schedule-item" style="height:18.75%">
         			<div class="schedule-container">
-        				<div class="schedule-time">30s</div>
-        				<div class="schedule-title">Soap</div>
-        		</div>
+        				<div class="schedule-time">45s</div>
+        				<div class="schedule-title">
+                            <img class="icon" src="assets/bottle-tonic-outline.svg" alt=""> Soap
+                        </div>
+                    </div>
         		</div>
         		<div class="schedule-item" style="height:37.5%">
         			<div class="schedule-container">
         				<div class="schedule-time">90s</div>
-        				<div class="schedule-title">Wash</div>
+        				<div class="schedule-title">
+                            <img class="icon" src="assets/water-outline.svg" alt=""> Rinse
+                        </div>
+                    </div>
         		</div>
-        		</div>
-        		<div class="schedule-item" style="height:12.5%">
+        		<div class="schedule-item" style="height:18.75%%">
         			<div class="schedule-container">
-        			<div class="schedule-time">30s</div>
-        				<div class="schedule-title">Dry</div>
+                        <div class="schedule-time">45s</div>
+        				<div class="schedule-title">
+                            <img class="icon" src="assets/weather-windy.svg" alt="">Dry
+                        </div>
         			</div>
+                </div>
         	</div>
-        	</div>
-        	<div class="btn" data-action="start">Let's shower.</div>
+            <div class="arrows">
+                <div class="btn" data-target=".intro--msg">
+                    <img src="assets/arrow-left.svg" alt="">
+                </div>
+        	   <div class="btn" data-target=".sound--msg">
+                    <img src="assets/arrow-right.svg" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal sound--msg hide">
+            <h2>Sound Test</h2>
+            <p>Let's get familiar with the sound for shifting phase (10s):</p>
+            <div class="btn" data-action="playRepeatingChime">
+                <img src="assets/sound.svg" alt="" style="width: 6vw;top: -0.3vw;left: -0.5vw;position: relative;"> Test sound
+            </div>
+            <img src="assets/shifting-phase.svg" alt="" style="margin-top: 6vw;">
+            <div class="arrows">
+                <div class="btn" data-target=".phase--msg">
+                    <img src="assets/arrow-left.svg" alt="">
+                </div>
+                <div class="btn" data-target=".ready--msg">
+                    <img src="assets/arrow-right.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="modal ready--msg hide">
+            <h2>⠀</h2>
+            <p>Place your phone near the shower,<br> but not so that it gets wet.</p>
+            <p>Let's begin.</p>
+        
+            <div class="arrows">
+                <div class="btn" data-target=".sound--msg">
+                    <img src="assets/arrow-left.svg" alt="">
+                </div>
+                <div class="btn" data-action="initScene">
+                    <img src="assets/arrow-right.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="modal thanks--msg hide">
+            <h2>Thank you for trying this out!</h2>
+            <p>This is the very first step and we are beyond grateful that you wanted to be part of this.</p>
+            <p>We will soon contact you with some follow-up questions.</p>
+            <p>Thanks to Swedish Energy Agency for supporting our research efforts!</p>
+            <p>/ Moum Design team</p>
+        
+            <div class="arrows">
+                <div class="btn" data-action="reloadApp">
+                    <img src="assets/arrow-right.svg" alt="">
+                </div>
+            </div>
         </div>
         
 
