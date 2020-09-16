@@ -2,7 +2,7 @@
 	"queue" : [
 			{ "type" : "intro",
 				"title" : "Intro",
-				"speech" : "Welcome. My team and I are glad you want to be part of this very first Shower test. When you hear the first chime it’s time to turn on the shower and rinse your body. And when you hear the chimes again you’ve got 10 seconds to turn it back off.",
+				"speech" : "Hello! I am a robot that will guide you now. When you hear the first chime it’s time to turn on the shower and rinse your body. And when you hear the chimes again you’ve got 10 seconds to turn it back off.",
 				"duration" : 30,
 				"background" : "#ffb430;"
 			},
@@ -20,13 +20,13 @@
 			},
 			{ "type" : "water",
 				"title" : "Rinse",
-				"speech" : "Time to rinse for 90 seconds. Turn the water back on and get started.",
+				"speech" : "Time to rinse for 90 seconds. Turn the water back on.",
 				"duration" : 90,
 				"background" : "#ff6530;"
 			},
 			{ "type" : "pause",
 				"title" : "Dry",
-				"speech" : "Good. Now it’s time to get dry. I think this might have been the first time a robot guided you to shower?",
+				"speech" : "Good. Now it’s time to get dry. Hope to meet you soon again!",
 				"duration" : 45,
 				"background" : "#ffb430;"
 			}
